@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>落ち着いた大人の趣味コミュニティ</title>
+
 <style>
 body {
     margin: 0;
@@ -18,14 +19,13 @@ body {
 }
 h1 {
     text-align: center;
-    font-size: 28px;
-    margin-bottom: 10px;
+    font-size: 26px;
 }
 .subtitle {
     text-align: center;
-    font-size: 16px;
     color: #555;
     line-height: 1.6;
+    margin-bottom: 20px;
 }
 .section {
     background: #fff;
@@ -35,29 +35,40 @@ h1 {
 }
 .section h2 {
     font-size: 20px;
-    margin-bottom: 15px;
 }
-ul {
-    padding-left: 20px;
+label {
+    display: block;
+    margin: 8px 0;
+    cursor: pointer;
+}
+input[type="radio"] {
+    margin-right: 8px;
 }
 .button-area {
     text-align: center;
     margin-top: 20px;
 }
 .cta-button {
-    background-color: #1e3a8a;
-    color: #fff;
+    background-color: #9ca3af;
+    color: white;
     padding: 14px 25px;
-    text-decoration: none;
     border-radius: 6px;
-    display: inline-block;
     font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    pointer-events: none;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+.cta-button.active {
+    background-color: #1e3a8a;
+    pointer-events: auto;
+    opacity: 1;
 }
 .small-text {
     font-size: 12px;
     color: #666;
     margin-top: 10px;
-    text-align: center;
 }
 .footer {
     font-size: 11px;
@@ -65,11 +76,17 @@ ul {
     text-align: center;
     margin-top: 30px;
 }
+.error {
+    color: red;
+    font-size: 13px;
+    margin-top: 10px;
+}
 @media (max-width:600px){
     h1 { font-size: 22px; }
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -77,8 +94,7 @@ ul {
 <h1>落ち着いた大人の趣味コミュニティ</h1>
 
 <p class="subtitle">
-映画・旅行・写真など共通の関心を持つ方が集まる<br>
-オンライン交流スペースです。<br><br>
+映画・旅行・写真など共通の関心を持つ方が集まるオンライン交流スペースです。<br>
 同世代で、無理のないペースで交流できる環境をご案内しています。<br>
 現在、多くの方にご参加いただいています。
 </p>
@@ -104,27 +120,34 @@ ul {
 
 <div class="section">
 <h2>簡単なアンケート</h2>
-<p>現在のご年齢層を教えてください</p>
-<p>◯ 35–39歳<br>
-◯ 40–49歳<br>
-◯ 50歳以上</p>
 
-<p>興味のあるテーマをお選びください</p>
-<p>◯ 映画<br>
-◯ 旅行<br>
-◯ 写真<br>
-◯ カフェ巡り<br>
-◯ 読書</p>
+<p><strong>現在のご年齢層を教えてください</strong></p>
+
+<label><input type="radio" name="age" value="35-39"> 35–39歳</label>
+<label><input type="radio" name="age" value="40-49"> 40–49歳</label>
+<label><input type="radio" name="age" value="50+"> 50歳以上</label>
+
+<p><strong>興味のあるテーマをお選びください</strong></p>
+
+<label><input type="radio" name="interest" value="映画"> 映画</label>
+<label><input type="radio" name="interest" value="旅行"> 旅行</label>
+<label><input type="radio" name="interest" value="写真"> 写真</label>
+<label><input type="radio" name="interest" value="カフェ巡り"> カフェ巡り</label>
+<label><input type="radio" name="interest" value="読書"> 読書</label>
 
 <div class="button-area">
+
 <p class="small-text">
 詳細は公式LINEよりご案内しています。<br>
 追加後、参加方法についてご説明いたします。
 </p>
 
-<a class="cta-button" href="https://url.hw88.us/s/GWMfEhlLh" target="_blank">
+<a id="lineButton" class="cta-button" href="#">
 参加方法を確認する
 </a>
+
+<p id="errorMsg" class="error"></p>
+
 </div>
 </div>
 
@@ -134,6 +157,42 @@ ul {
 </div>
 
 </div>
+
+<script>
+const ageOptions = document.querySelectorAll('input[name="age"]');
+const interestOptions = document.querySelectorAll('input[name="interest"]');
+const button = document.getElementById("lineButton");
+const errorMsg = document.getElementById("errorMsg");
+
+function checkSelection() {
+    const ageSelected = document.querySelector('input[name="age"]:checked');
+    const interestSelected = document.querySelector('input[name="interest"]:checked');
+
+    if (ageSelected && interestSelected) {
+        button.classList.add("active");
+        button.href = "https://url.hw88.us/s/GWMfEhlLh";
+        errorMsg.textContent = "";
+    } else {
+        button.classList.remove("active");
+        button.href = "#";
+    }
+}
+
+ageOptions.forEach(option => {
+    option.addEventListener("change", checkSelection);
+});
+
+interestOptions.forEach(option => {
+    option.addEventListener("change", checkSelection);
+});
+
+button.addEventListener("click", function(e){
+    if (!button.classList.contains("active")) {
+        e.preventDefault();
+        errorMsg.textContent = "すべての項目を選択してください。";
+    }
+});
+</script>
 
 </body>
 </html>
